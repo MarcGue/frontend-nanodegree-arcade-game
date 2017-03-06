@@ -14,12 +14,33 @@ var Enemy = function (x, y, speed) {
 // Update the enemy's position, required method for game
 // Parameter: dt, a time delta between ticks
 Enemy.prototype.update = function (dt) {
-    // You should multiply any movement by the dt parameter
+    // Resetting the Enemy's position when it is off the screen
+    if (this.x > 505) {
+        this.reset();
+    }
+
+    // Multiply any movement by the dt parameter
     // which will ensure the game runs at the same speed for
     // all computers.
-
     this.x += (this.speed * dt);
 
+    if (this.checkCollison()) {
+        player.reset();
+    }
+};
+
+Enemy.prototype.reset = function () {
+    this.x = xPositions[getRandomInt(0, xPositions.length - 1)];
+    this.y = yPositions[getRandomInt(0, yPositions.length - 1)];
+};
+
+// Checks wether the enemy collides with the player or not
+Enemy.prototype.checkCollison = function() {
+    var isRightOfPlayer = this.x + 50 > player.x;
+    var isLeftOfPlayer = this.x < player.x + 50;
+    var isUnderPlayer = this.y < player.y + 50;
+    var isAbovePlayer = this.y + 50 > player.y;
+    return isRightOfPlayer && isLeftOfPlayer && isUnderPlayer && isAbovePlayer;
 };
 
 // Draw the enemy on the screen, required method for game
@@ -34,22 +55,58 @@ var Player = function () {
     this.sprite = 'images/char-boy.png';
     this.x = 202;
     this.y = 404;
+    this.width = 101;
+    this.height = 171;
 };
 
-Player.prototype = Object.create(Enemy.prototype);
-Player.prototype.constructor = Player;
+// Draw the player on the screen, required method for game
+Player.prototype.render = function () {
+    ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
+};
+
+Player.prototype.update = function () {
+    // Player has reached the water
+    if (this.y <= 0) {
+        this.reset();
+    }
+};
+
+Player.prototype.handleInput = function (keyCode) {
+    var movementY = 46;
+    var movementX = 44;
+
+    if ('up' === keyCode && this.y >= 0) {
+        this.y -= movementY;
+    } else if ('down' === keyCode && this.y < 404) {
+        this.y += movementY;
+    } else if ('left' === keyCode && this.x > 0) {
+        this.x -= movementX;
+    } else if ('right' === keyCode && this.x <= 404) {
+        this.x += movementX;
+    }
+};
+
+// Will reset the position of the player
+Player.prototype.reset = function () {
+    this.x = 202;
+    this.y = 404;
+};
 
 // Now instantiate your objects.
 // Place all enemy objects in an array called allEnemies
 // Place the player object in a variable called player
-var allEnemies = [
-    new Enemy(-115, 60, 100),
-    new Enemy(-200, 146, 150),
-    new Enemy(-115, 226, 80)
-];
+var allEnemies = [];
+var xPositions = [-100, -200, -300, -400];
+var yPositions = [60, 146, 226];
+for (var i = 0; i < 6; i++) {
+    var x = xPositions[getRandomInt(0, xPositions.length -1)];
+    var y = yPositions[getRandomInt(0, yPositions.length -1)];
+    var speed = getRandomInt(60, 220);
 
-var player = new Player(202, 406, 0);
+    allEnemies.push(new Enemy(x, y, speed));
+}
 
+var player = new Player();
 
 // This listens for key presses and sends the keys to your
 // Player.handleInput() method. You don't need to modify this.
@@ -63,3 +120,7 @@ document.addEventListener('keyup', function (e) {
 
     player.handleInput(allowedKeys[e.keyCode]);
 });
+
+function getRandomInt(min, max) {
+    return Math.floor(Math.random() * (max - min + 1)) + min;
+}
