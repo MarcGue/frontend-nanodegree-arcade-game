@@ -55,8 +55,6 @@ var Player = function () {
     this.sprite = 'images/char-boy.png';
     this.x = 202;
     this.y = 404;
-    this.width = 101;
-    this.height = 171;
 };
 
 // Draw the player on the screen, required method for game
@@ -67,6 +65,8 @@ Player.prototype.render = function () {
 Player.prototype.update = function () {
     // Player has reached the water
     if (this.y <= 0) {
+        level++;
+        document.getElementById('levelNumber').innerHTML = level;
         this.reset();
     }
 };
@@ -95,16 +95,11 @@ Player.prototype.reset = function () {
 // Now instantiate your objects.
 // Place all enemy objects in an array called allEnemies
 // Place the player object in a variable called player
-var allEnemies = [];
 var xPositions = [-100, -200, -300, -400];
 var yPositions = [60, 146, 226];
-for (var i = 0; i < 6; i++) {
-    var x = xPositions[getRandomInt(0, xPositions.length -1)];
-    var y = yPositions[getRandomInt(0, yPositions.length -1)];
-    var speed = getRandomInt(60, 220);
+var level = 1;
 
-    allEnemies.push(new Enemy(x, y, speed));
-}
+var allEnemies = getAllEnemies();
 
 var player = new Player();
 
@@ -120,6 +115,18 @@ document.addEventListener('keyup', function (e) {
 
     player.handleInput(allowedKeys[e.keyCode]);
 });
+
+function getAllEnemies() {
+    var allEnemies = [];
+    for (var i = 0; i < 6; i++) {
+        var x = xPositions[getRandomInt(0, xPositions.length -1)];
+        var y = yPositions[getRandomInt(0, yPositions.length -1)];
+        var speed = getRandomInt(60, 220);
+
+        allEnemies.push(new Enemy(x, y, speed));
+    }
+    return allEnemies;
+}
 
 function getRandomInt(min, max) {
     return Math.floor(Math.random() * (max - min + 1)) + min;
