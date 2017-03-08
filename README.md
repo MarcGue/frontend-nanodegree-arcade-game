@@ -5,7 +5,7 @@
 ## Installation
 Download or clone this repository:
 
-` https://github.com/MarcGue/frontend-nanodegree-arcade-game `
+    https://github.com/MarcGue/frontend-nanodegree-arcade-game
 
 ## How to run the game
 - On your local machine navigate to the repository folder
