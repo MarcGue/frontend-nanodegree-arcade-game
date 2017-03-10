@@ -92,6 +92,7 @@ Player.prototype.reset = function () {
     this.x = 202;
     this.y = 404;
     this.level = 1;
+    document.getElementById('levelNumber').innerHTML = this.level;
 };
 
 // Now instantiate your objects.
