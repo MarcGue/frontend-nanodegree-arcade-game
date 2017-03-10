@@ -24,19 +24,21 @@ Enemy.prototype.update = function (dt) {
     // all computers.
     this.x += (this.speed * dt);
 
+    // Check for collision between Player and Enemy
     if (this.checkCollison()) {
         player.updateLevel(1);
         player.reset();
     }
 };
 
+// Will update the enemys' position
 Enemy.prototype.reset = function () {
     this.x = xPositions[getRandomInt(0, xPositions.length - 1)];
     this.y = yPositions[getRandomInt(0, yPositions.length - 1)];
 };
 
 // Checks wether the enemy collides with the player or not
-Enemy.prototype.checkCollison = function() {
+Enemy.prototype.checkCollison = function () {
     var isRightOfPlayer = this.x + 50 > player.x;
     var isLeftOfPlayer = this.x < player.x + 50;
     var isUnderPlayer = this.y < player.y + 50;
@@ -64,6 +66,7 @@ Player.prototype.render = function () {
     ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
 };
 
+// Will update the players position
 Player.prototype.update = function () {
     // Player has reached the water
     if (this.y <= 0) {
@@ -72,6 +75,9 @@ Player.prototype.update = function () {
     }
 };
 
+// Handles the players' input of arrow keys
+// Will move the player to the left or right,
+// to the top or the bottom
 Player.prototype.handleInput = function (keyCode) {
     var movementY = 46;
     var movementX = 44;
@@ -93,6 +99,7 @@ Player.prototype.reset = function () {
     this.y = 404;
 };
 
+// Will update the level
 Player.prototype.updateLevel = function (level) {
     this.level = level;
     document.getElementById('levelNumber').innerHTML = this.level;
@@ -121,11 +128,12 @@ document.addEventListener('keyup', function (e) {
     player.handleInput(allowedKeys[e.keyCode]);
 });
 
+// Creates 6 Enemies on a random postion with random speed
 function getAllEnemies() {
     var allEnemies = [];
     for (var i = 0; i < 6; i++) {
-        var x = xPositions[getRandomInt(0, xPositions.length -1)];
-        var y = yPositions[getRandomInt(0, yPositions.length -1)];
+        var x = xPositions[getRandomInt(0, xPositions.length - 1)];
+        var y = yPositions[getRandomInt(0, yPositions.length - 1)];
         var speed = getRandomInt(60, 220);
 
         allEnemies.push(new Enemy(x, y, speed));
@@ -133,6 +141,7 @@ function getAllEnemies() {
     return allEnemies;
 }
 
+// Creates a random number
 function getRandomInt(min, max) {
     return Math.floor(Math.random() * (max - min + 1)) + min;
 }
