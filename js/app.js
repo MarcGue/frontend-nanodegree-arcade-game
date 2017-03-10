@@ -25,6 +25,7 @@ Enemy.prototype.update = function (dt) {
     this.x += (this.speed * dt);
 
     if (this.checkCollison()) {
+        player.updateLevel(1);
         player.reset();
     }
 };
@@ -66,8 +67,7 @@ Player.prototype.render = function () {
 Player.prototype.update = function () {
     // Player has reached the water
     if (this.y <= 0) {
-        this.level++;
-        document.getElementById('levelNumber').innerHTML = this.level;
+        this.updateLevel(this.level++);
         this.reset();
     }
 };
@@ -91,7 +91,10 @@ Player.prototype.handleInput = function (keyCode) {
 Player.prototype.reset = function () {
     this.x = 202;
     this.y = 404;
-    this.level = 1;
+};
+
+Player.prototype.updateLevel = function (level) {
+    this.level = level;
     document.getElementById('levelNumber').innerHTML = this.level;
 };
 
