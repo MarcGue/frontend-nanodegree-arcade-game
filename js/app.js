@@ -55,6 +55,7 @@ var Player = function () {
     this.sprite = 'images/char-boy.png';
     this.x = 202;
     this.y = 404;
+    this.level = 1;
 };
 
 // Draw the player on the screen, required method for game
@@ -65,8 +66,8 @@ Player.prototype.render = function () {
 Player.prototype.update = function () {
     // Player has reached the water
     if (this.y <= 0) {
-        level++;
-        document.getElementById('levelNumber').innerHTML = level;
+        player.level++;
+        document.getElementById('levelNumber').innerHTML = player.level;
         this.reset();
     }
 };
@@ -90,6 +91,7 @@ Player.prototype.handleInput = function (keyCode) {
 Player.prototype.reset = function () {
     this.x = 202;
     this.y = 404;
+    this.level = 1;
 };
 
 // Now instantiate your objects.
@@ -97,7 +99,6 @@ Player.prototype.reset = function () {
 // Place the player object in a variable called player
 var xPositions = [-100, -200, -300, -400];
 var yPositions = [60, 146, 226];
-var level = 1;
 
 var allEnemies = getAllEnemies();
 
