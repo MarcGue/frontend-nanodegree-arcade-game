@@ -67,7 +67,7 @@ Player.prototype.render = function () {
 Player.prototype.update = function () {
     // Player has reached the water
     if (this.y <= 0) {
-        this.updateLevel(this.level++);
+        this.updateLevel(++this.level);
         this.reset();
     }
 };
